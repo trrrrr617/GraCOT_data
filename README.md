@@ -1,51 +1,51 @@
-# 汽车知识图谱与用户意图解析数据集
+# Automotive Knowledge Graph and User Intent Parsing Dataset
 
-本开源数据集主要用于基于知识图谱的汽车产品特征对比、推理，以及用户自然语言查询的意图识别与合法性校验。数据集基于 AIC 图谱框架构建，包含用于实验的图谱数据库导出文件以及对应的结构化测试用例。
+This open-source dataset is primarily designed for feature comparison and reasoning of automotive products based on a knowledge graph, as well as intent recognition and legality validation of user natural language queries. Built upon the AIC graph framework, the dataset includes graph database export files used for experiments and the corresponding structured test cases.
 
-## 📂 文件目录说明
+## 📂 File Directory Description
 
-数据集中包含以下三个核心文件：
+The dataset contains the following three core files:
 
 1. **`Main.dump`**
-   - **格式**: Neo4j 数据库 Dump 文件。
-   - **说明**: 实验的主要数据来源，包含了完整的底层图谱结构与基础数据实体。
+   - **Format**: Neo4j Database Dump File.
+   - **Description**: The primary data source for the experiments, containing the complete underlying graph structure and fundamental data entities.
    
 2. **`BasedOnAIC.dump`**
-   - **格式**: Neo4j 数据库 Dump 文件。
-   - **说明**: 基于 AIC 图谱框架搭建的知识图谱，包含针对本实验特定定义的关系、属性或上层本体结构。
+   - **Format**: Neo4j Database Dump File.
+   - **Description**: A knowledge graph built upon the AIC framework, containing specifically defined relationships, attributes, and upper-level ontology structures for this experiment.
 
 3. **`data.json`**
-   - **格式**: JSON。
-   - **说明**: 包含实验的结构化数据、对比特征以及用户输入的测试样例，主要分为产品基础信息、特征推理（Exp1）和用户查询解析（Exp25）三部分。
+   - **Format**: JSON.
+   - **Description**: Contains the structured experimental data, contrastive features, and user input test cases. It is mainly divided into three parts: basic product info, feature reasoning (Exp1), and user query parsing (Exp25).
 
-## 📊 `data.json` 数据结构概览
+## 📊 `data.json` Data Structure Overview
 
-`data.json` 由以下三个主要模块构成：
+`data.json` consists of the following three main modules:
 
-### 1. `product_info` (产品基础信息)
-包含两款车型（产品A 与 产品B）在多个维度上的属性对比数据。维度包括但不限于：
-- `6万公里保养总成本预估`
-- `长x宽x高(mm)`
-- `车身结构`
-- `最高车速(km/h)`
-- `级别`
-- `整车保修期限`
+### 1. `product_info` (Basic Product Information)
+Contains attribute comparison data for two vehicle models (Product A and Product B) across multiple dimensions. The dimensions include, but are not limited to:
+- `6万公里保养总成本预估` (Estimated Total Maintenance Cost for 60,000 km)
+- `长x宽x高(mm)` (Length x Width x Height in mm)
+- `车身结构` (Body Structure)
+- `最高车速(km/h)` (Maximum Speed in km/h)
+- `级别` (Vehicle Class)
+- `整车保修期限` (Vehicle Warranty Period)
 
-### 2. `exp1_key_features` (特征对比与推理)
-记录了基于产品属性推理出的上层特征总结。数据格式为 `[特征描述, 推理依据]` 列表。
-- **示例**: `["产品A相对产品B更耐用", "推理来自整车保修期限"]`
-- **任务目标**: 用于验证模型或算法能否根据底层的图谱属性准确生成/提取对比结论。
+### 2. `exp1_key_features` (Feature Comparison and Reasoning)
+Records the summary of high-level features inferred from product attributes. The data format is a `[Feature Description, Reasoning Basis]` list.
+- **Example**: `["产品A相对产品B更耐用", "推理来自整车保修期限"]` (*"Product A is more durable than Product B", "Inferred from the vehicle warranty period"*)
+- **Task Objective**: Used to verify whether models or algorithms can accurately generate or extract comparative conclusions based on the underlying graph attributes.
 
-### 3. `exp25_user_input_and_dimensions` (用户输入与维度映射)
-包含多条用户自然语言查询语句及其对应的解析结果，主要用于测试模型的意图识别和边界处理能力。
-- `user_input`: 用户输入的自然语言文本。
-- `legal`: 布尔值，判断该输入是否合理且在处理范围内。正常的购车需求为 `true`；诸如“保养成本低于500元且车速500km/h”、“保修100年”等不切实际或超出常理的请求均标记为 `false`。
-- `dimensions`: 若请求合法，这里列出对应的图谱属性维度（如 `["长x宽x高(mm)", "级别"]`）；若不合法则为 `null`。
+### 3. `exp25_user_input_and_dimensions` (User Input and Dimension Mapping)
+Contains multiple user natural language queries and their corresponding parsing results, mainly used to test a model's intent recognition and boundary handling capabilities.
+- `user_input`: The natural language text input by the user.
+- `legal`: A boolean value determining if the input is reasonable and within the processing scope. Normal car purchase demands are `true`; unrealistic or absurd requests such as "maintenance cost under 500 yuan and speed of 500 km/h" or "100-year warranty" are marked as `false`.
+- `dimensions`: If the request is legal, the corresponding graph attribute dimensions are listed here (e.g., `["长x宽x高(mm)", "级别"]`); if illegal, this value is `null`.
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 导入 Neo4j 图谱数据
-您可以使用 `neo4j-admin` 工具将 `.dump` 文件恢复到本地 Neo4j 数据库中。请确保您的 Neo4j 版本与导出版本兼容。
+### Importing Neo4j Graph Data
+You can use the `neo4j-admin` tool to restore the `.dump` files to your local Neo4j database. Please ensure your Neo4j version is compatible with the exported version.
 
 ```bash
 neo4j stop
